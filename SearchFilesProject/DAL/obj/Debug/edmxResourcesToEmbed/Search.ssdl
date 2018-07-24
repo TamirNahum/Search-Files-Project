@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SearchDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="SearchDetails">
+    <Key>
+      <PropertyRef Name="SearchId" />
+    </Key>
+    <Property Name="SearchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchString" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="SearchFolder" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SearchResults">
+    <Key>
+      <PropertyRef Name="ResultId" />
+    </Key>
+    <Property Name="ResultId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="SearchId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_SearchResults_SearchDetails">
+    <End Role="SearchDetails" Type="Self.SearchDetails" Multiplicity="1" />
+    <End Role="SearchResults" Type="Self.SearchResults" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SearchDetails">
+        <PropertyRef Name="SearchId" />
+      </Principal>
+      <Dependent Role="SearchResults">
+        <PropertyRef Name="SearchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SearchDBModelStoreContainer">
+    <EntitySet Name="SearchDetails" EntityType="Self.SearchDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SearchResults" EntityType="Self.SearchResults" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_SearchResults_SearchDetails" Association="Self.FK_SearchResults_SearchDetails">
+      <End Role="SearchDetails" EntitySet="SearchDetails" />
+      <End Role="SearchResults" EntitySet="SearchResults" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
